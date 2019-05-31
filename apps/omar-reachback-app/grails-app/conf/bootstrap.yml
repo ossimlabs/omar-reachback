@@ -1,6 +1,6 @@
 spring:
   application:
-    name: tlv
+    name: omar-reachback
   cloud:
     config:
       enabled: false
