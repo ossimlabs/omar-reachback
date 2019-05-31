@@ -1,0 +1,9 @@
+pluginManagement {
+	repositories {
+		maven { url ossimMavenProxy }
+	}
+}
+
+include 'omar-reachback-app'
+
+project(':omar-reachback-app').projectDir = "${ rootProject.projectDir }/apps/omar-reachback-app" as File
