@@ -1,3 +1,32 @@
+imagerySources:
+    - url: https://omar.ossim.io/omar-wfs/wfs
+      # Define the metadata fields and their regular expressions
+      metadataMap:
+          acquisitionDate: '"acquisition_date":"([^"]*)"'
+          imageId: '"image_id":"([^"]*)"'
+          niirs: '"niirs":"([^"]*)"'
+          sensor: '"sensor_id":"([^"]*)"'
+      # Define any required URL params
+      requiredParams:
+          outputFormat: JSON
+          request: GetFeature
+          service: WFS
+          typeName: omar:raster_entry
+          version: 1.1.0
+      # Where are the results array located in the response
+      resultsKey: features
+      # Where is the metadata located in each result
+      resultsMetadataKey: properties
+      # How the params supplied map to the URL params expected by the service
+      urlParamMap:
+          # This will be evaluated as code
+          filter:
+              - |
+               "acquisition_date < params.startDate AND acquisition_date < params.endDate AND niirs >= params.niirs AND (sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%')"
+          # This will be mapped
+          maxFeatures: maxFeatures
+
+
 ---
 grails:
     profile: web
