@@ -22,7 +22,16 @@ imagerySources:
           # This will be evaluated as code
           filter:
               - |
-               "acquisition_date < params.startDate AND acquisition_date < params.endDate AND niirs >= params.niirs AND (sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%')"
+                params.endDate ? "acquisition_date < '" + params.endDate + "'" : ""
+              - |
+                params.startDate ? "acquisition_date > '" + params.startDate + "'" : ""
+              - |
+                params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
+              - |
+                params.niirs ? "niirs > " + params.niirs : ""
+              - |
+                params.sensors ? "(sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%')" : ""
+
           # This will be mapped
           maxFeatures: maxFeatures
 

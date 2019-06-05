@@ -31,13 +31,22 @@ class SearchService {
         source.urlParamMap.each {
             key, value ->
             if ( value instanceof ArrayList ) {
-                urlParams.push( "${ key }=${ URLEncoder.encode( Eval.me( 'params', params, value[ 0 ] ) ) }" )
+                def urlParamsArray = []
+                value.each {
+                    def eval = Eval.me( 'params', params, it )
+                    if ( eval != "" ) {
+                        urlParamsArray.push( eval )
+                    }
+                }
+                urlParams.push( "${ key }=${ URLEncoder.encode( urlParamsArray.join( " AND " ) ) }" )
             }
             else if ( params[ key ] ) {
                 urlParams.push( "${ value }=${ params[ key ] }" )
             }
         }
+
         def url = "${ source.url }?${ urlParams.join( "&" ) }"
+        println url
         def http = new HTTPBuilder( url )
 
 
