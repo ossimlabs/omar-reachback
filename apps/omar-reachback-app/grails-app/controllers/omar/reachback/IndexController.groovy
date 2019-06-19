@@ -1,9 +1,5 @@
 package omar.reachback
 
-
-import groovy.json.JsonOutput
-
-
 class IndexController {
 
 	def searchService
@@ -17,6 +13,6 @@ class IndexController {
 		def results = searchService.search( params )
 
 
-		render JsonOutput.toJson( results )
+		render results
 	}
 }
