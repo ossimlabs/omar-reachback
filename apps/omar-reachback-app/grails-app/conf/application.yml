@@ -4,7 +4,7 @@ imagerySource:
     metadataMap:
         acquisitionDate: '"acquisition_date":"([^"]*)"'
         imageId: '"image_id":"([^"]*)"'
-        niirs: '"niirs":"([^"]*)"'
+        niirs: '"niirs":([^a-zA-Z]*)'
         sensor: '"sensor_id":"([^"]*)"'
     # Define any required URL params
     requiredParams:
