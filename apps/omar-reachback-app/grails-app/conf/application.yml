@@ -1,38 +1,38 @@
-imagerySource:
-    url: https://omar.ossim.io/omar-wfs/wfs
-    # Define the metadata fields and their regular expressions
-    metadataMap:
-        acquisitionDate: '"acquisition_date":"([^"]*)"'
-        imageId: '"image_id":"([^"]*)"'
-        niirs: '"niirs":([^,]*)'
-        sensor: '"sensor_id":"([^"]*)"'
-    # Define any required URL params
-    requiredParams:
-        outputFormat: JSON
-        request: GetFeature
-        service: WFS
-        typeName: omar:raster_entry
-        version: 1.1.0
-    # Where are the results array located in the response
-    resultsKey: features
-    # Where is the metadata located in each result
-    resultsMetadataKey: properties
-    # How the params supplied map to the URL params expected by the service
-    urlParamMap:
-        # This will be evaluated as code
-        filter:
-            - |
-                params.endDate ? "acquisition_date < '" + params.endDate + "'" : ""
-            - |
-                params.startDate ? "acquisition_date > '" + params.startDate + "'" : ""
-            - |
-                params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
-            - |
-                params.niirs ? "niirs > " + params.niirs : ""
-            - |
-                params.sensors ? "(sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%')" : ""
-        # This will be mapped
-        maxFeatures: maxFeatures
+#imagerySource:
+#    url: https://omar.ossim.io/omar-wfs/wfs
+#    # Define the metadata fields and their regular expressions
+#    metadataMap:
+#        acquisitionDate: '"acquisition_date":"([^"]*)"'
+#        imageId: '"image_id":"([^"]*)"'
+#        niirs: '"niirs":([^,]*)'
+#        sensor: '"sensor_id":"([^"]*)"'
+#    # Define any required URL params
+#    requiredParams:
+#        outputFormat: JSON
+#        request: GetFeature
+#        service: WFS
+#        typeName: omar:raster_entry
+#        version: 1.1.0
+#    # Where are the results array located in the response
+#    resultsKey: features
+#    # Where is the metadata located in each result
+#    resultsMetadataKey: properties
+#    # How the params supplied map to the URL params expected by the service
+#    urlParamMap:
+#        # This will be evaluated as code
+#        filter:
+#            - |
+#                params.endDate ? "acquisition_date < '" + params.endDate + "'" : ""
+#            - |
+#                params.startDate ? "acquisition_date > '" + params.startDate + "'" : ""
+#            - |
+#                params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
+#            - |
+#                params.niirs ? "niirs > " + params.niirs : ""
+#            - |
+#                params.sensors ? "(sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%')" : ""
+#        # This will be mapped
+#        maxFeatures: maxFeatures
 
 server:
     contextPath: /omar-reachback
