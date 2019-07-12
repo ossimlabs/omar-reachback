@@ -39,7 +39,19 @@ dependencyManagement {
     applyMavenExclusions false
 }
 
+if ( System.getenv('O2_INLINE_BUILD') ) {
+  grails {
+    plugins {
+      compile project(":omar-core-plugin")
+    }
+  }
+}
+
 dependencies {
+    if ( ! System.getenv( 'O2_INLINE_BUILD' ) ) {
+        compile "io.ossim.omar.plugins:omar-core-plugin:+"
+    }
+
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
@@ -75,7 +87,6 @@ dependencies {
 
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     compile 'org.springframework.cloud:spring-cloud-starter-eureka'
-
 }
 
 assets {

@@ -37,6 +37,11 @@ imagerySource:
 server:
     contextPath: /omar-reachback
 
+swagger:
+  schemes:
+    - HTTPS
+    - HTTP
+
 ---
 grails:
     profile: web
