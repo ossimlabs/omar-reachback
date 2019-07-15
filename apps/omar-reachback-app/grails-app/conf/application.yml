@@ -28,9 +28,9 @@ imagerySource:
             - |
                 params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
             - |
-                params.niirs ? "niirs > " + params.niirs : ""
+                params.niirs ? "( niirs > " + params.niirs + " OR niirs IS NULL )": ""
             - |
-                params.sensors ? "(sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%')" : ""
+                params.sensors ? "( ( sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%') OR sensor_id IS NULL )" : ""
         # This will be mapped
         maxFeatures: maxFeatures
 
