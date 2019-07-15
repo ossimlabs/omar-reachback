@@ -22,9 +22,9 @@ imagerySource:
         # This will be evaluated as code
         filter:
             - |
-                params.endDate ? "( acquisition_date < '" + params.endDate + " OR acquisition_date IS NULL )'" : ""
+                params.endDate ? "( acquisition_date < '" + params.endDate + "' OR acquisition_date IS NULL )" : ""
             - |
-                params.startDate ? "( acquisition_date > '" + params.startDate + " OR acquisition_date IS NULL )'" : ""
+                params.startDate ? "( acquisition_date > '" + params.startDate + "' OR acquisition_date IS NULL )" : ""
             - |
                 params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
             - |
