@@ -45,7 +45,7 @@ class IndexController {
 		@ApiImplicitParam(
 			dataType = 'integer',
 			defaultValue = '',
-			name = 'maxResults',
+			name = 'maxFeatures',
 			paramType = 'query',
 			value = 'Sets the maximum results returned.'
 		),
