@@ -3,7 +3,7 @@ imagerySource:
     # Define the metadata fields and their regular expressions
     metadataMap:
         acquisitionDate: '"acquisition_date":"([^"]*)"'
-        imageId: '"image_id":"([^"]*)"'
+        imageId: '"filename":"([^"]*)"'
         niirs: '"niirs":([^,]*)'
         sensor: '"sensor_id":"([^"]*)"'
     # Define any required URL params
@@ -36,6 +36,7 @@ imagerySource:
 
 server:
     contextPath: /omar-reachback
+    port: 9090
 
 swagger:
   schemes:
