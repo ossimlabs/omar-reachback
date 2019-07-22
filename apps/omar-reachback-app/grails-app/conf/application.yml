@@ -36,7 +36,6 @@ imagerySource:
 
 server:
     contextPath: /omar-reachback
-    port: 9090
 
 swagger:
   schemes:
