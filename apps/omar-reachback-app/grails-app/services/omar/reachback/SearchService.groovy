@@ -27,10 +27,11 @@ class SearchService {
         }
         source.urlParamMap.each {
             key, value ->
-            if ( value instanceof ArrayList ) {
+
+            if ( value instanceof org.grails.config.NavigableMap ) {
                 def urlParamsArray = []
                 value.each {
-                    def eval = Eval.me( 'params', params, it )
+                    def eval = Eval.me( 'params', params, it.value )
                     if ( eval != "" ) {
                         urlParamsArray.push( eval )
                     }
