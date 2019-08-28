@@ -14,11 +14,15 @@ import io.swagger.annotations.ApiOperation
 
 class IndexController {
 
+	def orderService
 	def searchService
 
 
-	def download() {
-		render "N/A"
+	def order() {
+		def results = orderService.order( params )
+
+
+		render results
 	}
 
 
