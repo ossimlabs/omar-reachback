@@ -51,7 +51,8 @@ class SearchService {
             features.each {
                 def map = [ : ]
                 def metadata = JsonOutput.toJson( it )
-                source.metadataMap.each {
+
+                source.search.metadataMap.each {
                     key, regexp ->
                     def pattern = Pattern.compile( regexp )
                     def value = metadata.find( pattern ) { matcher, val -> return val }

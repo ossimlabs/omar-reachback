@@ -11,9 +11,9 @@
 #        # Define the metadata fields and their regular expressions
 #        metadataMap:
 #            acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+#            id: 'properties.*"id":([^,]*)'
 #            imageId: 'properties.*"filename":"([^"]*)"'
 #            niirs: 'properties.*"niirs":([^,]*)'
-#            recordId: 'properties.*"id":([^,]*)'
 #            sensor: 'properties.*"sensor_id":"([^"]*)"'
 #        # Define any required URL params
 #        requiredParams:
