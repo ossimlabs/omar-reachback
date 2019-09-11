@@ -12,13 +12,13 @@ class OrderService {
 
 
     def order( params ) {
-        def source = grailsApplication.config.imagerySource
+        def source = grailsApplication.config.imagerySource.order
 
         def urlParams = []
-        source.order.requiredParams.each {
+        source.requiredParams.each {
             urlParams.push( "${ it.key }=${ it.value }" )
         }
-        source.order.urlParamMap.each {
+        source.urlParamMap.each {
             key, value ->
 
             if ( value instanceof org.grails.config.NavigableMap ) {

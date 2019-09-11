@@ -4,6 +4,7 @@
 #        requiredParams:
 #            collection: some_collection
 #            destination: ftp://ftp_user:password@server_ip/directory
+#        url: https://omar.ossim.io/omar-wfs/wfs
 #        urlParamMap:
 #            # This will be mapped
 #            id: recordId
@@ -25,6 +26,7 @@
 #        # Where are the results array located in the response
 #        resultsKey: features
 #        # How the params supplied map to the URL params expected by the service
+#        url: https://omar.ossim.io/omar-wfs/wfs
 #        urlParamMap:
 #            # This will be evaluated as code
 #            filter:
@@ -40,7 +42,6 @@
 #                  params.sensors ? "( ( sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%') OR sensor_id IS NULL )" : ""
 #            # This will be mapped
 #            maxFeatures: maxFeatures
-#    url: https://omar.ossim.io/omar-wfs/wfs
 
 server:
     contextPath: /omar-reachback

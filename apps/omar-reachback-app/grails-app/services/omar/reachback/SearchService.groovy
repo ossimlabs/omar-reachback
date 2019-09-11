@@ -18,13 +18,13 @@ class SearchService {
     def search( params ) {
         def results = []
 
-        def source = grailsApplication.config.imagerySource
+        def source = grailsApplication.config.imagerySource.search
 
         def urlParams = []
-        source.search.requiredParams.each {
+        source.requiredParams.each {
             urlParams.push( "${ it.key }=${ it.value }" )
         }
-        source.search.urlParamMap.each {
+        source.urlParamMap.each {
             key, value ->
 
             if ( value instanceof org.grails.config.NavigableMap ) {
@@ -47,7 +47,7 @@ class SearchService {
         def text = httpService.http( url )
         try {
             def json = new JsonSlurper().parseText( text )
-            def features = json[ source.search.resultsKey ]
+            def features = json[ source.resultsKey ]
             features.each {
                 def map = [ : ]
                 def metadata = JsonOutput.toJson( it )
