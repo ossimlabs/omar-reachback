@@ -11,6 +11,21 @@ class OrderService {
     def httpService
 
 
+    def automated() {
+        def file = new File( "ids.txt" )
+
+        if ( file.exists() ) {
+            // pop the first id off the list
+            def ids = file.getText().split( "\n" ) as Collection
+            def id = ids[ 0 ]
+            ids.removeAt( 0 )
+            file.write( ids.join( "\n" ) + '\n' )
+
+            // order it
+            //order([ id: id ])
+        }
+    }
+
     def order( params ) {
         def source = grailsApplication.config.imagerySource.order
 
@@ -25,7 +40,7 @@ class OrderService {
                 def urlParamsArray = []
                 value.each {
                     def eval = Eval.me( 'params', params, it.value )
-                    if ( eval != "" ) {
+                    if ( eval != '' ) {
                         urlParamsArray.push( eval )
                     }
                 }
@@ -37,7 +52,9 @@ class OrderService {
         }
 
         def url = "${ source.url }?${ urlParams.join( "&" ) }"
-        println url
+        println 'Ordering...'
+        println URLDecoder.decode(url)
+
         def text = httpService.http( url )
 
 

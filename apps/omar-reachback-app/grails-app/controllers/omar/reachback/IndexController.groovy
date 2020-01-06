@@ -1,6 +1,7 @@
 package omar.reachback
 
 
+import groovy.json.JsonOutput
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
@@ -78,7 +79,11 @@ class IndexController {
 	def search() {
 		def results = searchService.search( params )
 
-
-		render results
+		try {
+			render( contentType: 'application/json', text: JsonOutput.toJson( results ) )
+		}
+		catch( Exception event ) {
+			render null
+		}
 	}
 }

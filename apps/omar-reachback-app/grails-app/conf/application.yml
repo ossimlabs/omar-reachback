@@ -1,3 +1,9 @@
+#historicalSearch:
+#    # number of minutes by which to increment searches
+#    interval: 525600
+#    # start time of the historical search
+#    startDate: '2000-01-01 00:00:00'
+
 #imagerySource:
 #    order:
 #        # Define any required URL params
@@ -12,8 +18,8 @@
 #        # Define the metadata fields and their regular expressions
 #        metadataMap:
 #            acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
-#            id: 'properties.*"id":([^,]*)'
-#            imageId: 'properties.*"filename":"([^"]*)"'
+#            id: 'properties.*"id":(\d+)'
+#            imageId: 'properties.*"image_id":"([^"]*)"'
 #            niirs: 'properties.*"niirs":([^,]*)'
 #            sensor: 'properties.*"sensor_id":"([^"]*)"'
 #        # Define any required URL params
@@ -26,14 +32,14 @@
 #        # Where are the results array located in the response
 #        resultsKey: features
 #        # How the params supplied map to the URL params expected by the service
-#        url: https://omar.ossim.io/omar-wfs/wfs
+#        url: https://omar-dev.ossim.io/omar-wfs/wfs
 #        urlParamMap:
 #            # This will be evaluated as code
 #            filter:
 #                eval1: |
-#                  params.endDate ? "( acquisition_date < '" + params.endDate + "' OR acquisition_date IS NULL )" : ""
+#                  params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
 #                eval2: |
-#                  params.startDate ? "( acquisition_date > '" + params.startDate + "' OR acquisition_date IS NULL )" : ""
+#                  params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
 #                eval3: |
 #                  params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
 #                eval4: |
@@ -42,6 +48,14 @@
 #                  params.sensors ? "( ( sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%') OR sensor_id IS NULL )" : ""
 #            # This will be mapped
 #            maxFeatures: maxFeatures
+
+#o2WfsUrl: https://omar-dev.ossim.io/omar-wfs/wfs
+
+# Number of minutes between order jobs
+#orderInterval: 1
+
+# Number of minutes between search jobs
+#searchInterval: 1
 
 server:
     contextPath: /omar-reachback
