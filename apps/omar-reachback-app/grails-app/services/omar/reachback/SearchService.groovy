@@ -55,7 +55,7 @@ class SearchService {
             image.save()
 
             if ( image.hasErrors() ) {
-                images.errors.allErrors.each { println it }
+                image.errors.allErrors.each { println it }
             }
         }
     }
