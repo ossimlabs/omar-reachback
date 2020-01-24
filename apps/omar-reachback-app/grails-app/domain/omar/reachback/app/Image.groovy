@@ -15,6 +15,7 @@ class Image {
     }
 
     static mapping = {
+        status index: "image_status_idx"
         version false
     }
 }
