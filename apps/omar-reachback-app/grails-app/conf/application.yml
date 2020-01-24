@@ -1,60 +1,82 @@
-historicalSearch:
-#    # number of minutes by which to increment searches
-    interval: 525600
-#    # start time of the historical search
-    startDate: '2000-01-01 00:00:00'
-
-imagerySource:
-#    order:
-#        # Define any required URL params
-#        requiredParams:
-#            collection: some_collection
-#            destination: ftp://ftp_user:password@server_ip/directory
-#        url: https://omar.ossim.io/omar-wfs/wfs
-#        urlParamMap:
+imagerySources:
+    o2-dev:
+        historicalSearch:
+            # number of minutes by which to increment searches
+            interval: 525600
+            # start time of the historical search
+            startDate: '2000-01-01 00:00:00'
+#        order:
+#            # Define any required URL params
+#            requiredParams:
+#                collection: some_collection
+#                destination: ftp://ftp_user:password@server_ip/directory
+#            url: https://omar.ossim.io/omar-wfs/wfs
+#            urlParamMap:
 #            # This will be mapped
-#            id: recordId
-    search:
-#        # Define the metadata fields and their regular expressions
-        metadataMap:
-            acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
-            id: 'properties.*"id":(\d+)'
-            imageId: 'properties.*"image_id":"([^"]*)"'
-            niirs: 'properties.*"niirs":([^,]*)'
-            sensor: 'properties.*"sensor_id":"([^"]*)"'
-#        # Define any required URL params
-        requiredParams:
-            outputFormat: JSON
-            request: GetFeature
-            service: WFS
-            typeName: omar:raster_entry
-            version: 1.1.0
-#        # Where are the results array located in the response
-        resultsKey: features
-#        # How the params supplied map to the URL params expected by the service
-        url: https://omar-dev.ossim.io/omar-wfs/wfs
-        urlParamMap:
-#            # This will be evaluated as code
-            filter:
-                eval1: |
-                  params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
-                eval2: |
-                  params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
-#                eval3: |
-#                  params.bbox ? "BBOX(ground_geom," + params.bbox + ")" : ""
-#                eval4: |
-#                  params.niirs ? "( niirs > " + params.niirs + " OR niirs IS NULL )": ""
-#                eval5: |
-#                  params.sensors ? "( ( sensor_id LIKE '%" + params.sensors.split( "," ).join( "%' OR sensor_id LIKE'%" ) + "%') OR sensor_id IS NULL )" : ""
-                eval6: |
+#                id: recordId
+        search:
+            # Define the metadata fields and their regular expressions
+            metadataMap:
+                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+                id: 'properties.*"id":(\d+)'
+                imageId: 'properties.*"image_id":"([^"]*)"'
+                niirs: 'properties.*"niirs":([^,]*)'
+                sensor: 'properties.*"sensor_id":"([^"]*)"'
+            # Define any required URL params
+            requiredParams:
+                outputFormat: JSON
+                request: GetFeature
+                service: WFS
+                typeName: omar:raster_entry
+                version: 1.1.0
+            # Where are the results array located in the response
+            resultsKey: features
+            # How the params supplied map to the URL params expected by the service
+            url: https://omar-dev.ossim.io/omar-wfs/wfs
+            urlParamMap:
+                # This will be evaluated as code
+                filter:
+                    eval1: |
+                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
+                    eval2: |
+                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
+                    eval3: |
+                      true == true ? "image_id IS NOT NULL" : ""
+                # This will be mapped
+                maxFeatures: maxFeatures
+    o2-prod:
+        historicalSearch:
+            interval: 5256000
+            startDate: '1900-01-01 00:00:00'
+        search:
+            metadataMap:
+                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+                id: 'properties.*"id":(\d+)'
+                imageId: 'properties.*"image_id":"([^"]*)"'
+                niirs: 'properties.*"niirs":([^,]*)'
+                sensor: 'properties.*"sensor_id":"([^"]*)"'
+            requiredParams:
+                outputFormat: JSON
+                request: GetFeature
+                service: WFS
+                typeName: omar:raster_entry
+                version: 1.1.0
+            resultsKey: features
+            url: https://omar.ossim.io/omar-wfs/wfs
+            urlParamMap:
+                filter:
+                    eval1: |
+                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
+                    eval2: |
+                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
+                eval3: |
                   true == true ? "image_id IS NOT NULL" : ""
-#            # This will be mapped
-            maxFeatures: maxFeatures
+                maxFeatures: maxFeatures
 
 o2WfsUrl: https://omar-dev.ossim.io/omar-wfs/wfs
 
 # Number of minutes between order jobs
-#orderInterval: 1
+orderInterval: 1
 
 # Number of minutes between search jobs
 searchInterval: 1
@@ -71,7 +93,7 @@ swagger:
 grails:
     profile: web
     codegen:
-        defaultPackage: omar.reachback
+        defaultPackage: omar.reachback.app
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
@@ -83,17 +105,25 @@ info:
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:
+    jmx:
+        unique-names: true
     main:
         banner-mode: "off"
     groovy:
         template:
             check-template-location: false
-
-# Spring Actuator Endpoints are Disabled by Default
-endpoints:
-    enabled: false
-    jmx:
-        enabled: true
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
+management:
+    endpoints:
+        enabled-by-default: false
 
 ---
 grails:
@@ -144,12 +174,13 @@ grails:
             htmlcodec: xml
             codecs:
                 expression: html
-                scriptlets: html
+                scriptlet: html
                 taglib: none
                 staticparts: none
-endpoints:
-    jmx:
-        unique-names: true
+management:
+    endpoints:
+        jmx:
+            unique-names: true
 
 ---
 hibernate:
@@ -175,7 +206,7 @@ environments:
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
         dataSource:
-            dbCreate: create-drop
+            dbCreate: update
             url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
             properties:
                 jmxEnabled: true
@@ -195,3 +226,45 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+---
+server:
+    servlet:
+        context-path: /omar-reachback
+    contextPath: ${server.servlet.context-path}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      enabled: true
+      sensitive: false
+    health:
+      enabled: true
+
+grails:
+    cors:
+        enabled: true
+    resources:
+        pattern: '/**'
+    servlet:
+        version: 3.0
+---
+spring:
+  application:
+    name: omar-reachback
+  cloud:
+    discovery:
+      enabled: ${SPRING_CLOUD_DISCOVERY_ENABLED:false}
+    service-registry:
+      auto-registration:
+        enabled: ${spring.cloud.discovery.enabled}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://omar-eureka-server:8761/omar-eureka-server/eureka}
+  instance:
+    preferIpAddress: true

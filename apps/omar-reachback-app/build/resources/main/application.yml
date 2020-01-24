@@ -1,0 +1,270 @@
+imagerySources:
+    o2-dev:
+        historicalSearch:
+            # number of minutes by which to increment searches
+            interval: 525600
+            # start time of the historical search
+            startDate: '2000-01-01 00:00:00'
+#        order:
+#            # Define any required URL params
+#            requiredParams:
+#                collection: some_collection
+#                destination: ftp://ftp_user:password@server_ip/directory
+#            url: https://omar.ossim.io/omar-wfs/wfs
+#            urlParamMap:
+#            # This will be mapped
+#                id: recordId
+        search:
+            # Define the metadata fields and their regular expressions
+            metadataMap:
+                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+                id: 'properties.*"id":(\d+)'
+                imageId: 'properties.*"image_id":"([^"]*)"'
+                niirs: 'properties.*"niirs":([^,]*)'
+                sensor: 'properties.*"sensor_id":"([^"]*)"'
+            # Define any required URL params
+            requiredParams:
+                outputFormat: JSON
+                request: GetFeature
+                service: WFS
+                typeName: omar:raster_entry
+                version: 1.1.0
+            # Where are the results array located in the response
+            resultsKey: features
+            # How the params supplied map to the URL params expected by the service
+            url: https://omar-dev.ossim.io/omar-wfs/wfs
+            urlParamMap:
+                # This will be evaluated as code
+                filter:
+                    eval1: |
+                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
+                    eval2: |
+                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
+                    eval3: |
+                      true == true ? "image_id IS NOT NULL" : ""
+                # This will be mapped
+                maxFeatures: maxFeatures
+    o2-prod:
+        historicalSearch:
+            interval: 5256000
+            startDate: '1900-01-01 00:00:00'
+        search:
+            metadataMap:
+                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+                id: 'properties.*"id":(\d+)'
+                imageId: 'properties.*"image_id":"([^"]*)"'
+                niirs: 'properties.*"niirs":([^,]*)'
+                sensor: 'properties.*"sensor_id":"([^"]*)"'
+            requiredParams:
+                outputFormat: JSON
+                request: GetFeature
+                service: WFS
+                typeName: omar:raster_entry
+                version: 1.1.0
+            resultsKey: features
+            url: https://omar.ossim.io/omar-wfs/wfs
+            urlParamMap:
+                filter:
+                    eval1: |
+                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
+                    eval2: |
+                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
+                eval3: |
+                  true == true ? "image_id IS NOT NULL" : ""
+                maxFeatures: maxFeatures
+
+o2WfsUrl: https://omar-dev.ossim.io/omar-wfs/wfs
+
+# Number of minutes between order jobs
+orderInterval: 1
+
+# Number of minutes between search jobs
+searchInterval: 1
+
+server:
+    contextPath: /omar-reachback
+
+swagger:
+  schemes:
+    - HTTPS
+    - HTTP
+
+---
+grails:
+    profile: web
+    codegen:
+        defaultPackage: omar.reachback.app
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
+info:
+    app:
+        name: 'omar-reachback-app'
+        version: '2.0.0-SNAPSHOT'
+        grailsVersion: '4.0.1'
+spring:
+    jmx:
+        unique-names: true
+    main:
+        banner-mode: "off"
+    groovy:
+        template:
+            check-template-location: false
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
+management:
+    endpoints:
+        enabled-by-default: false
+
+---
+grails:
+    mime:
+        disable:
+            accept:
+                header:
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
+        types:
+            all: '*/*'
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            form: application/x-www-form-urlencoded
+            html:
+              - text/html
+              - application/xhtml+xml
+            js: text/javascript
+            json:
+              - application/json
+              - text/json
+            multipartForm: multipart/form-data
+            pdf: application/pdf
+            rss: application/rss+xml
+            text: text/plain
+            hal:
+              - application/hal+json
+              - application/hal+xml
+            xml:
+              - text/xml
+              - application/xml
+    urlmapping:
+        cache:
+            maxsize: 1000
+    controllers:
+        defaultScope: singleton
+    converters:
+        encoding: UTF-8
+    views:
+        default:
+            codec: html
+        gsp:
+            encoding: UTF-8
+            htmlcodec: xml
+            codecs:
+                expression: html
+                scriptlet: html
+                taglib: none
+                staticparts: none
+management:
+    endpoints:
+        jmx:
+            unique-names: true
+
+---
+hibernate:
+    cache:
+        queries: false
+        use_second_level_cache: false
+        use_query_cache: false
+dataSource:
+    pooled: true
+    jmxExport: true
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+
+environments:
+    development:
+        dataSource:
+            dbCreate: create-drop
+            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    test:
+        dataSource:
+            dbCreate: update
+            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    production:
+        dataSource:
+            dbCreate: update
+            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            properties:
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: 50
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 600000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+---
+server:
+    servlet:
+        context-path: /omar-reachback
+    contextPath: ${server.servlet.context-path}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      enabled: true
+      sensitive: false
+    health:
+      enabled: true
+
+grails:
+    cors:
+        enabled: true
+    resources:
+        pattern: '/**'
+    servlet:
+        version: 3.0
+---
+spring:
+  application:
+    name: omar-reachback
+  cloud:
+    discovery:
+      enabled: ${SPRING_CLOUD_DISCOVERY_ENABLED:false}
+    service-registry:
+      auto-registration:
+        enabled: ${spring.cloud.discovery.enabled}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://omar-eureka-server:8761/omar-eureka-server/eureka}
+  instance:
+    preferIpAddress: true
