@@ -1,6 +1,0 @@
-#Thu, 23 Jan 2020 14:52:24 -0700
-
-info.app.version=2.0.0-SNAPSHOT
-info.app.name=omar-reachback-app
-grails.env=development
-info.app.grailsVersion=4.0.1

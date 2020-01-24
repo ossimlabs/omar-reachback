@@ -1,6 +1,0 @@
----
-spring:
-  cloud:
-    config:
-      enabled: ${SPRING_CLOUD_CONFIG_ENABLED:false}
-      uri: http://omar-config-server:8888/omar-config-server
