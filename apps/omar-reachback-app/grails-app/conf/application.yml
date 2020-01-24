@@ -1,10 +1,10 @@
-imagerySources:
-    o2-dev:
-        historicalSearch:
-            # number of minutes by which to increment searches
-            interval: 525600
-            # start time of the historical search
-            startDate: '2000-01-01 00:00:00'
+#imagerySources:
+#    o2-dev:
+#        historicalSearch:
+#            # number of minutes by which to increment searches
+#            interval: 525600
+#            # start time of the historical search
+#            startDate: '2000-01-01 00:00:00'
 #        order:
 #            # Define any required URL params
 #            requiredParams:
@@ -14,72 +14,72 @@ imagerySources:
 #            urlParamMap:
 #            # This will be mapped
 #                id: recordId
-        search:
-            # Define the metadata fields and their regular expressions
-            metadataMap:
-                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
-                id: 'properties.*"id":(\d+)'
-                imageId: 'properties.*"image_id":"([^"]*)"'
-                niirs: 'properties.*"niirs":([^,]*)'
-                sensor: 'properties.*"sensor_id":"([^"]*)"'
-            # Define any required URL params
-            requiredParams:
-                outputFormat: JSON
-                request: GetFeature
-                service: WFS
-                typeName: omar:raster_entry
-                version: 1.1.0
-            # Where are the results array located in the response
-            resultsKey: features
-            # How the params supplied map to the URL params expected by the service
-            url: https://omar-dev.ossim.io/omar-wfs/wfs
-            urlParamMap:
-                # This will be evaluated as code
-                filter:
-                    eval1: |
-                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
-                    eval2: |
-                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
-                    eval3: |
-                      true == true ? "image_id IS NOT NULL" : ""
-                # This will be mapped
-                maxFeatures: maxFeatures
-    o2-prod:
-        historicalSearch:
-            interval: 5256000
-            startDate: '1900-01-01 00:00:00'
-        search:
-            metadataMap:
-                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
-                id: 'properties.*"id":(\d+)'
-                imageId: 'properties.*"image_id":"([^"]*)"'
-                niirs: 'properties.*"niirs":([^,]*)'
-                sensor: 'properties.*"sensor_id":"([^"]*)"'
-            requiredParams:
-                outputFormat: JSON
-                request: GetFeature
-                service: WFS
-                typeName: omar:raster_entry
-                version: 1.1.0
-            resultsKey: features
-            url: https://omar.ossim.io/omar-wfs/wfs
-            urlParamMap:
-                filter:
-                    eval1: |
-                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
-                    eval2: |
-                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
-                eval3: |
-                  true == true ? "image_id IS NOT NULL" : ""
-                maxFeatures: maxFeatures
+#        search:
+#            # Define the metadata fields and their regular expressions
+#            metadataMap:
+#                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+#                id: 'properties.*"id":(\d+)'
+#                imageId: 'properties.*"image_id":"([^"]*)"'
+#                niirs: 'properties.*"niirs":([^,]*)'
+#                sensor: 'properties.*"sensor_id":"([^"]*)"'
+#            # Define any required URL params
+#            requiredParams:
+#                outputFormat: JSON
+#                request: GetFeature
+#                service: WFS
+#                typeName: omar:raster_entry
+#                version: 1.1.0
+#            # Where are the results array located in the response
+#            resultsKey: features
+#            # How the params supplied map to the URL params expected by the service
+#            url: https://omar-dev.ossim.io/omar-wfs/wfs
+#            urlParamMap:
+#                # This will be evaluated as code
+#                filter:
+#                    eval1: |
+#                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
+#                    eval2: |
+#                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
+#                    eval3: |
+#                      true == true ? "image_id IS NOT NULL" : ""
+#                # This will be mapped
+#                maxFeatures: maxFeatures
+#    o2-prod:
+#        historicalSearch:
+#            interval: 5256000
+#            startDate: '1900-01-01 00:00:00'
+#        search:
+#            metadataMap:
+#                acquisitionDate: 'properties.*"acquisition_date":"([^"]*)"'
+#                id: 'properties.*"id":(\d+)'
+#                imageId: 'properties.*"image_id":"([^"]*)"'
+#                niirs: 'properties.*"niirs":([^,]*)'
+#                sensor: 'properties.*"sensor_id":"([^"]*)"'
+#            requiredParams:
+#                outputFormat: JSON
+#                request: GetFeature
+#                service: WFS
+#                typeName: omar:raster_entry
+#                version: 1.1.0
+#            resultsKey: features
+#            url: https://omar.ossim.io/omar-wfs/wfs
+#            urlParamMap:
+#                filter:
+#                    eval1: |
+#                      params.endDate ? "( ingest_date < '" + params.endDate + "' AND ingest_date IS NOT NULL )" : ""
+#                    eval2: |
+#                      params.startDate ? "( ingest_date > '" + params.startDate + "' AND ingest_date IS NOT NULL )" : ""
+#                eval3: |
+#                  true == true ? "image_id IS NOT NULL" : ""
+#                maxFeatures: maxFeatures
 
-o2WfsUrl: https://omar-dev.ossim.io/omar-wfs/wfs
+#o2WfsUrl: https://omar-dev.ossim.io/omar-wfs/wfs
 
 # Number of minutes between order jobs
-orderInterval: 1
+#orderInterval: 1
 
 # Number of minutes between search jobs
-searchInterval: 1
+#searchInterval: 1
 
 server:
     contextPath: /omar-reachback
