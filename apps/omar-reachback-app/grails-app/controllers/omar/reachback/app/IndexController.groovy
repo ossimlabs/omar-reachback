@@ -77,7 +77,11 @@ class IndexController {
 		)
 	])
 	def search() {
-		def results = searchService.search( params )
+		def results = []
+		grailsApplication.config.imagerySources.each {
+			params.sourceName = it.key
+			results += searchService.search( params )
+		}
 
 		try {
 			render( contentType: 'application/json', text: JsonOutput.toJson( results ) )

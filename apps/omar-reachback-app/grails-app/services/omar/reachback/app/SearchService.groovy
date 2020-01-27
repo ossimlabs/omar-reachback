@@ -103,7 +103,7 @@ class SearchService {
             println "Found ${ features.size() } features(s)..."
 
             features.each {
-                def map = [ : ]
+                def map = [ sourceName: params.sourceName ]
                 def metadata = JsonOutput.toJson( it )
 
                 source.metadataMap.each {
