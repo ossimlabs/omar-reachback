@@ -1,5 +1,9 @@
 package omar.reachback.app
 
+
+import groovyx.gpars.GParsPool
+
+
 class HistoricalJob {
 
     def searchService
@@ -11,9 +15,11 @@ class HistoricalJob {
 
 
     def execute() {
-        grailsApplication.config.imagerySources.each {
-            if ( it.value.historicalSearch ) {
-                searchService.historical( it.key )
+        GParsPool.withPool {
+            grailsApplication.config.imagerySources.eachParallel {
+                if ( it.value.historicalSearch ) {
+                    searchService.historical( it.key )
+                }
             }
         }
     }

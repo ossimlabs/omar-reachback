@@ -1,5 +1,9 @@
 package omar.reachback.app
 
+
+import groovyx.gpars.GParsPool
+
+
 class SearchJob {
 
     def searchService
@@ -13,9 +17,11 @@ class SearchJob {
 
     def execute() {
         if ( grailsApplication.config.searchInterval ) {
-            grailsApplication.config.imagerySources.each {
-                if ( it.value.search ) {
-                    searchService.automated( it.key )
+            GParsPool.withPool {
+                grailsApplication.config.imagerySources.eachParallel {
+                    if ( it.value.search ) {
+                        searchService.automated( it.key )
+                    }
                 }
             }
         }

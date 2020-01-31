@@ -23,7 +23,7 @@ class StatusService {
         println "Checking if ${ image.imageId } alreadys exists..."
 
         def wfsParams = [
-            URLEncoder.encode( "filter=image_id LIKE '${ image.imageId }'" ),
+            "filter=${ URLEncoder.encode( "image_id LIKE '${ image.imageId }'" ) }",
             'maxFeatures=1',
             'outputFormat=JSON',
             'request=getFeature',

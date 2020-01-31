@@ -93,14 +93,14 @@ class SearchService {
         }
 
         def url = "${ source.url }?${ urlParams.join( '&' ) }"
-        println 'Searching...'
+        println "Searching in ${ params.sourceName }..."
         println URLDecoder.decode(url)
 
         def text = httpService.http( url )
         try {
             def json = new JsonSlurper().parseText( text )
             def features = json[ source.resultsKey ]
-            println "Found ${ features.size() } features(s)..."
+            println "Found ${ features.size() } features(s) in ${ params.sourceName }..."
 
             features.each {
                 def map = [ sourceName: params.sourceName ]

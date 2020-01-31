@@ -1,5 +1,9 @@
 package omar.reachback.app
 
+
+import groovyx.gpars.GParsPool
+
+
 class OrderJob {
 
     def orderService
@@ -12,9 +16,11 @@ class OrderJob {
 
     def execute() {
         if ( grailsApplication.config.orderInterval ) {
-            grailsApplication.config.imagerySources.each {
-                if ( it.value.order ) {
-                    orderService.automated( it.key )
+            GParsPool.withPool {
+                grailsApplication.config.imagerySources.eachParallel {
+                    if ( it.value.order ) {
+                        orderService.automated( it.key )
+                    }
                 }
             }
         }

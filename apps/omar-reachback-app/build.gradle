@@ -10,6 +10,7 @@ dependencies {
         compile "io.ossim.omar.plugins:omar-core-plugin:+"
 
         compile 'org.grails.plugins:quartz:2.0.13'
-compile 'org.quartz-scheduler:quartz:2.2.1'
+        compile 'org.quartz-scheduler:quartz:2.2.1'
+        compile "org.codehaus.gpars:gpars:1.2.0"
     }
 }
