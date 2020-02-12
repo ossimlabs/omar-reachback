@@ -6,7 +6,7 @@ class StatusJob {
 
 
     static triggers = {
-        simple repeatInterval: 10 * 1000
+        simple repeatInterval: 10 * 1000 // 10 seconds
     }
 
 
