@@ -35,7 +35,7 @@ class OrderService {
             }
 
             def params = [
-                id: image.id,
+                id: image.uid,
                 sourceName: sourceName
             ]
             image.status = "ORDERING"
