@@ -2,6 +2,8 @@
 #FROM ${BASE_IMAGE}
 #FROM adoptopenjdk/openjdk8:alpine-slim
 FROM nexus-docker-public-hosted.ossim.io/openjdk8:alpine-slim
+RUN rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/*
 RUN apk update
 RUN apk add curl
 
