@@ -1,3 +1,6 @@
 apps/omar-reachback-app/build
 apps/omar-reachback-app/cookie
 .gradle
+packaged-chart
+*.lock
+charts/*.tgz
