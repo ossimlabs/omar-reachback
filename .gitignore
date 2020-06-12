@@ -4,3 +4,4 @@ apps/omar-reachback-app/cookie
 packaged-chart
 *.lock
 charts/*.tgz
+.idea
