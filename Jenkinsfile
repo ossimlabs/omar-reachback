@@ -133,12 +133,12 @@ podTemplate(
         withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_DOWNLOAD_URL}") {  //TODO
           if (BRANCH_NAME == 'master'){
                 sh """
-                    docker build --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:"${VERSION}" ./docker
+                    docker build --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:"${VERSION}" ./docker
                 """
           }
           else {
                 sh """
-                    docker build --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:"${VERSION}".a ./docker
+                    docker build --network=host -t "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:"${VERSION}".a ./docker
                 """
           }
         }
@@ -150,19 +150,19 @@ podTemplate(
           withDockerRegistry(credentialsId: 'dockerCredentials', url: "https://${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}") {
             if (BRANCH_NAME == 'master'){
                 sh """
-                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:"${VERSION}"
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:"${VERSION}"
                 """
             }
             else if (BRANCH_NAME == 'dev') {
                 sh """
-                    docker tag "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:"${VERSION}".a "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:dev
-                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:"${VERSION}".a
-                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:dev
+                    docker tag "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:"${VERSION}".a "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:dev
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:"${VERSION}".a
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:dev
                 """
             }
             else {
                 sh """
-                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback-app:"${VERSION}".a           
+                    docker push "${DOCKER_REGISTRY_PUBLIC_UPLOAD_URL}"/omar-reachback:"${VERSION}".a           
                 """
             }
           }
