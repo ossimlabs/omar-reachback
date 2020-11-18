@@ -20,7 +20,8 @@ class StatusService {
 
         image.status = "CHECKING"
         image.save()
-        println "Checking if ${ image.imageId } alreadys exists..."
+//        println "Checking if ${ image.imageId } alreadys exists..."
+        log.trace "Checking if ${ image.imageId } alreadys exists..."
 
         def wfsParams = [
             "filter=${ URLEncoder.encode( "image_id LIKE '${ image.imageId }'" ) }",
@@ -32,25 +33,28 @@ class StatusService {
             'version=1.1.0'
         ]
         def url = "${ grailsApplication.config.o2WfsUrl }?${ wfsParams.join( '&' ) }"
-        println URLDecoder.decode( url )
+//        println URLDecoder.decode( url )
+        log.trace(URLDecoder.decode( url ))
 
         def text = httpService.http( url )
         try {
             def json = new JsonSlurper().parseText( text )
             def numberOfFeatures = json.features.size()
             if ( numberOfFeatures > 0 ) {
-                println "Found ${ image.imageId } !"
+//                println "Found ${ image.imageId } !"
+                log.trace "Found ${ image.imageId } !"
                 image.status = "INGESTED"
             }
             else {
-                println "Nope, ${ image.imageId } hasn't been ingested yet..."
+//                println "Nope, ${ image.imageId } hasn't been ingested yet..."
+                log.trace "Nope, ${ image.imageId } hasn't been ingested yet..."
                 image.status = "PENDING"
             }
             image.save()
         }
         catch ( Exception event ) {
-            println event
-
+//            println event
+            log.error(event.toString())
 
             return null
         }
