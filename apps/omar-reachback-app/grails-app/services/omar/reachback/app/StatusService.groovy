@@ -52,7 +52,7 @@ class StatusService {
             }
             image.save()
         }
-        catch ( Exception event ) {
+        catch ( IllegalArgumentException event ) {
 //            println event
             log.error(event.toString())
 

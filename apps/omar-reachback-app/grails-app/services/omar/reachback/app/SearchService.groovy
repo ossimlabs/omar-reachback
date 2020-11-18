@@ -121,7 +121,7 @@ class SearchService {
 
             return results
         }
-        catch ( Exception event ) {
+        catch ( IllegalArgumentException event ) {
 //            println event
             log.error(event.toString())
 
