@@ -74,8 +74,11 @@ class OrderService {
         }
 
         def url = "${ source.url }?${ urlParams.join( "&" ) }"
-        println 'Ordering...'
-        println URLDecoder.decode(url)
+//        println 'Ordering...'
+//        println URLDecoder.decode(url)
+
+        log.trace 'Ordering...'
+        log.trace(URLDecoder.decode(url).toString())
 
         def text = httpService.http( url )
 

@@ -44,7 +44,7 @@ class SearchService {
     }
 
     def recordResults( startDate, endDate, sourceName ) {
-        def source = grailsApplication.config.imagerySources[ "${ sourceName }" ]
+//        def source = grailsApplication.config.imagerySources[ "${ sourceName }" ]
         def params = [
             endDate: new SimpleDateFormat( 'yyyy-MM-dd HH:mm:ss' ).format( endDate ),
             startDate: new SimpleDateFormat( 'yyyy-MM-dd HH:mm:ss' ).format( startDate ),
@@ -61,7 +61,7 @@ class SearchService {
             image.save()
 
             if ( image.hasErrors() ) {
-                image.errors.allErrors.each { println it }
+                image.errors.allErrors.each { log.trace(it.toString) }
             }
         }
     }
@@ -93,14 +93,17 @@ class SearchService {
         }
 
         def url = "${ source.url }?${ urlParams.join( '&' ) }"
-        println "Searching in ${ params.sourceName }..."
-        println URLDecoder.decode(url)
+//        println "Searching in ${ params.sourceName }..."
+//        println URLDecoder.decode(url)
+        log.trace "Searching in ${ params.sourceName }..."
+        log.trace(URLDecoder.decode(url))
 
         def text = httpService.http( url )
         try {
             def json = new JsonSlurper().parseText( text )
             def features = json[ source.resultsKey ]
-            println "Found ${ features.size() } features(s) in ${ params.sourceName }..."
+//            println "Found ${ features.size() } features(s) in ${ params.sourceName }..."
+            log.trace "Found ${ features.size() } features(s) in ${ params.sourceName }..."
 
             features.each {
                 def map = [ sourceName: params.sourceName ]
@@ -118,9 +121,9 @@ class SearchService {
 
             return results
         }
-        catch ( Exception event ) {
-            println event
-
+        catch ( IllegalArgumentException event ) {
+//            println event
+            log.error(event.toString())
 
             return null
         }
