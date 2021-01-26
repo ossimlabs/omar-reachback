@@ -86,8 +86,9 @@ class IndexController {
 		try {
 			render( contentType: 'application/json', text: JsonOutput.toJson( results ) )
 		}
-		catch( Exception event ) {
+		catch( IllegalArgumentException event ) {
 			render null
+			log.error(event.toString())
 		}
 	}
 }
