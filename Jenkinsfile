@@ -109,8 +109,7 @@ podTemplate(
         withSonarQubeEnv('sonarqube'){
           sh """
             ${scannerHome}/bin/sonar-scanner \
-            -Dsonar.projectKey=omar-reachback \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.projectKey=omar-reachback 
           """
         }
       }
