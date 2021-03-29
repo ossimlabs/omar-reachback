@@ -6,18 +6,8 @@ grails {
     }
 }
 dependencies {
-    components {
-        all { ComponentMetadataDetails details ->
-            def version = details.id.version
-            if (version.contains("SNAPSHOT")) {
-                details.status = "milestone" // default in Gradle
-            } else if (version.contains("RELEASE")) {
-                details.status = "release"
-            }
-        }
-    }
     if ( ! System.getenv('O2_INLINE_BUILD') ) {
-        compile "io.ossim.omar.plugins:omar-core-plugin:latest.release"
+        compile "io.ossim.omar.plugins-RELEASE:omar-core-plugin:+"
 
         compile 'org.grails.plugins:quartz:2.0.13'
         compile 'org.quartz-scheduler:quartz:2.2.1'
