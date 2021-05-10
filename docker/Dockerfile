@@ -1,8 +1,8 @@
-#ARG BASE_IMAGE
-#FROM ${BASE_IMAGE}
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 #FROM adoptopenjdk/openjdk8:alpine-slim
 #FROM nexus-docker-public-hosted.ossim.io/openjdk8:alpine-slim
-FROM nexus-docker-public-hosted.ossim.io/openjdk11:alpine-slim
+#FROM nexus-docker-public-hosted.ossim.io/openjdk11:alpine-slim
 RUN apk add curl
 
 ENV HOME /home/omar
